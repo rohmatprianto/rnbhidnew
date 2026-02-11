@@ -10,6 +10,12 @@
             </x-ui.alert>
         @endsession
 
+        @session('error')
+    <x-ui.alert variant="warning">
+        {{ $value }}
+    </x-ui.alert>
+@endsession
+
         <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
             <div class="max-w-full overflow-x-auto custom-scrollbar">
                 <table class="w-full min-w-[1102px]">
@@ -42,9 +48,6 @@
                                     <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ $user->created_at }}</p>
                                 </td>
                                 <td class="px-5 py-4 sm:px-6">
-                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ $user->updated_at }}</p>
-                                </td>
-                                <td class="px-5 py-4 sm:px-6">
                                     <div class="flex items-center gap-2">
                                         <a href="{{ route('users.edit', $user) }}"
                                             class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-theme-xs transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]">
@@ -55,6 +58,24 @@
                                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                             </svg>
                                         </a>
+                                        <form action="{{ route('users.destroy', $user) }}" method="POST"
+      onsubmit="return confirm('Delete this user?');">
+    @csrf
+    @method('DELETE')
+
+    <button type="submit"
+        class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-theme-xs transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6" />
+            <path
+                d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+            <line x1="10" y1="11" x2="10" y2="17" />
+            <line x1="14" y1="11" x2="14" y2="17" />
+        </svg>
+    </button>
+</form>
                                     </div>
                                 </td>
                             </tr>
@@ -77,4 +98,6 @@
         @endif
     </div>
 @endsection
+
+
 
