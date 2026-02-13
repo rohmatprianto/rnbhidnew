@@ -29,4 +29,14 @@ class UserPolicy
     {
         return (bool) ($authUser->is_admin ?? false);
     }
+    
+    public function restore(User $auth, User $user): bool
+{
+    return (bool) ($auth->is_admin ?? false);
+}
+
+public function updateStatus(User $auth, User $user): bool
+{
+    return (bool) ($auth->is_admin ?? false);
+}
 }

@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
 
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+        Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])->name('users.status.update');
     });
 
     /**
@@ -39,6 +41,10 @@ Route::middleware(['auth'])->group(function () {
     Route::match(['put', 'patch'], '/users/{user}', [UserController::class, 'update'])
         ->middleware('can:update,user')
         ->name('users.update');
+
+    Route::patch('/users/{user}/photo', [UserController::class, 'updatePhoto'])
+    ->middleware('can:update,user')
+    ->name('users.photo.update');
 });
 
 require __DIR__.'/auth.php';
