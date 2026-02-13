@@ -12,17 +12,16 @@ class UserPolicy
         return (bool) ($authUser->is_admin ?? false);
     }
 
-    // SELF + ADMIN: lihat detail user
     public function view(User $authUser, User $user): bool
-    {
-        return (bool) ($authUser->is_admin ?? false) || $authUser->id === $user->id;
-    }
+{
+    return (bool) ($authUser->is_admin ?? false);
+}
 
-    // SELF + ADMIN: edit/update user
-    public function update(User $authUser, User $user): bool
-    {
-        return (bool) ($authUser->is_admin ?? false) || $authUser->id === $user->id;
-    }
+public function update(User $authUser, User $user): bool
+{
+    return (bool) ($authUser->is_admin ?? false) || $authUser->id === $user->id;
+}
+
 
     // ADMIN only: hapus user
     public function delete(User $authUser, User $user): bool
@@ -39,4 +38,7 @@ public function updateStatus(User $auth, User $user): bool
 {
     return (bool) ($auth->is_admin ?? false);
 }
+
+
+
 }

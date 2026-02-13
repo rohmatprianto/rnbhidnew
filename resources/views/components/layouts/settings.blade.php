@@ -4,15 +4,39 @@
     <div class="grid grid-cols-1 xl:grid-cols-[280px_1fr]">
         <!-- Settings Navigation -->
         <div class="border-b border-gray-200 xl:border-b-0 xl:border-r dark:border-gray-800">
-            <nav class="flex xl:flex-col p-1" x-data="{ active: '{{ request()->routeIs('settings.profile.*') ? 'profile' : (request()->routeIs('settings.password.*') ? 'password' : 'appearance') }}' }">
-                <a href="{{ route('settings.profile.edit') }}"
-                   :class="active === 'profile' ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' : 'text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-700/50'"
-                   class="flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-colors">
+            <nav class="flex xl:flex-col p-1" x-data="{
+                active: '{{ (request()->routeIs('settings.profile.show')
+                        ? 'profile/show'
+                        : request()->routeIs('settings.profile.edit'))
+                    ? 'profile/edit'
+                    : (request()->routeIs('settings.profile.photo')
+                        ? 'profile/photo'
+                        : (request()->routeIs('settings.password.*')
+                            ? 'password'
+                            : 'appearance')) }}'
+            }">
+                <a href="{{ route('settings.profile.show') }}"
+                    :class="active === 'profile/show' ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' :
+                        'text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-700/50'"
+                    class="flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-colors">
                     Profile
                 </a>
+                <a href="{{ route('settings.profile.edit') }}"
+                    :class="active === 'profile/edit' ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' :
+                        'text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-700/50'"
+                    class="flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-colors">
+                    Edit Profile
+                </a>
+                <a href="{{ route('settings.profile.photo') }}"
+                    :class="active === 'profile/photo' ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' :
+                        'text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-700/50'"
+                    class="flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-colors">
+                    Change Photo
+                </a>
                 <a href="{{ route('settings.password.edit') }}"
-                   :class="active === 'password' ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' : 'text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-700/50'"
-                   class="flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-colors">
+                    :class="active === 'password' ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' :
+                        'text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-700/50'"
+                    class="flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-colors">
                     Password
                 </a>
             </nav>

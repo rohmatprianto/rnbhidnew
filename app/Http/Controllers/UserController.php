@@ -149,28 +149,6 @@ class UserController extends Controller
         unset($data['password']);
     }
 
-    if ($request->hasFile('photo')) {
-    $dir = public_path('images/assets/userphoto');
-    if (!File::exists($dir)) {
-        File::makeDirectory($dir, 0755, true);
-    }
-
-    // hapus foto lama (jika ada)
-    if (!empty($user->photo)) {
-        $oldPath = public_path($user->photo);
-        if (File::exists($oldPath)) {
-            File::delete($oldPath);
-        }
-    }
-
-    $file = $request->file('photo');
-    $filename = 'u_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-    $file->move($dir, $filename);
-
-    $data['photo'] = 'images/assets/userphoto/' . $filename;
-}
-
     $user->update($data);
 
     return redirect()
@@ -178,8 +156,7 @@ class UserController extends Controller
         ->with('success', 'User updated.');
 }
 
-// public function updatePhoto(UpdateUserPhotoRequest $request, User $user): RedirectResponse
-public function updatePhoto(UpdateUserPhotoRequest $request, User $user)
+public function updatePhoto(UpdateUserPhotoRequest $request, User $user): RedirectResponse
 {
     $this->authorize('update', $user);
 
@@ -205,9 +182,9 @@ public function updatePhoto(UpdateUserPhotoRequest $request, User $user)
         'photo_path' => 'images/assets/userphoto/' . $filename,
     ]);
 
-    // return redirect()
-    //     ->route('users.edit', $user)
-    //     ->with('success', 'Photo updated.');
+    return redirect()
+        ->route('users.edit', $user)
+        ->with('success', 'Photo updated.');
 }
 
 
@@ -258,5 +235,7 @@ public function updateStatus(Request $request, User $user): RedirectResponse
 
     return back()->with('success', 'Status updated.');
 }
+
+
 
 }

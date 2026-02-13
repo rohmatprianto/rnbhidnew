@@ -55,6 +55,8 @@
                         <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ $user->sosmed ?? '-' }}</p>
                     </td>
 
+
+
                     <td class="px-5 py-4 sm:px-6">
                         @php
                             $status = $user->status ?? '-';

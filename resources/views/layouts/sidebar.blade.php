@@ -15,46 +15,30 @@
             this.initializeActiveMenus();
         },
     
-        // Normalize: remove trailing slash (except root)
-        normalizePath(p) {
-            if (!p) return '';
-            // Ensure string
-            p = String(p);
-    
-            // If empty or just '/', return '/'
-            if (p === '/') return '/';
-    
-            // Remove trailing slashes
-            return p.replace(/\/+$/, '');
+        normalize(path) {
+            // path dari route() biasanya '/users' atau 'users'
+            if (!path) return '';
+            return path.replace(/^\/+/, ''); // buang leading slash
         },
     
-        // Match exact OR prefix (resource route)
-        matchPath(current, target) {
-            current = this.normalizePath(current);
-            target = this.normalizePath(target);
+        isPathActive(menuPath) {
+            const cur = this.normalize('{{ $currentPath }}'); // contoh: 'users/5'
+            const target = this.normalize(menuPath); // contoh: 'users'
     
-            // exact
-            if (current === target) return true;
+            if (!target) return false;
     
-            // prefix (resource children), avoid root prefix
-            if (target !== '/' && current.startsWith(target + '/')) return true;
-    
-            return false;
+            // exact match OR prefix match (users/xxx)
+            return cur === target || cur.startsWith(target + '/');
         },
     
         initializeActiveMenus() {
-            const currentPath = this.normalizePath(window.location.pathname);
-    
             @foreach ($menuGroups as $groupIndex => $menuGroup)
-                @foreach ($menuGroup['items'] as $itemIndex => $item)
-                    @if (isset($item['subItems']))
-                        @foreach ($item['subItems'] as $subItem)
-                            {
-                                const target = this.normalizePath('{{ $subItem['path'] }}');
-                                if (this.matchPath(currentPath, target)) {
-                                    this.openSubmenus['{{ $groupIndex }}-{{ $itemIndex }}'] = true;
-                                }
-                            } @endforeach
+            @foreach ($menuGroup['items'] as $itemIndex => $item)
+                @if (isset($item['subItems']))
+                    @foreach ($item['subItems'] as $subItem)
+                        if (this.isPathActive('{{ $subItem['path'] }}')) {
+                            this.openSubmenus['{{ $groupIndex }}-{{ $itemIndex }}'] = true;
+                        } @endforeach
             @endif
             @endforeach
             @endforeach
@@ -64,11 +48,9 @@
             const key = groupIndex + '-' + itemIndex;
             const newState = !this.openSubmenus[key];
     
-            // Close all other submenus when opening a new one
             if (newState) {
                 this.openSubmenus = {};
             }
-    
             this.openSubmenus[key] = newState;
         },
     
@@ -77,11 +59,8 @@
             return this.openSubmenus[key] || false;
         },
     
-        // Used by :class in menu items
         isActive(path) {
-            const current = this.normalizePath(window.location.pathname);
-            const target = this.normalizePath(path);
-            return this.matchPath(current, target);
+            return this.isPathActive(path);
         }
     }"
     :class="{

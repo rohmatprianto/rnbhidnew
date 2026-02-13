@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -27,6 +28,18 @@ class LoginController extends Controller
         ]);
 
         $this->ensureIsNotRateLimited($request);
+
+        $user = User::where('email', $request->email)->first();
+if ($user && ($user->status ?? null) !== 'aktif') {
+        RateLimiter::hit($this->throttleKey($request));
+
+        return back()
+            ->withInput($request->only('email', 'remember'))
+            ->with('toast', [
+                'type' => 'warning',
+                'message' => 'Akun Anda belum aktif. Silakan hubungi admin.',
+            ]);
+    }
 
         if (! Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey($request));

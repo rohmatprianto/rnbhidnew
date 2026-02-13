@@ -39,15 +39,25 @@ class MenuHelper
                         'pro'  => false,
                     ],
                     [
-                        'name' => 'My Profile',
-                        'path' => route('settings.profile.edit', absolute: false),
-                        'pro'  => false,
-                    ],
-                    [
-                        'name' => 'Change Password',
-                        'path' => route('settings.password.edit', absolute: false),
-                        'pro'  => false,
-                    ],
+                    'name' => 'Profile',
+                    'path' => route('settings.profile.show', absolute: false),
+                    'pro'  => false,
+                ],
+                [
+                    'name' => 'Edit Profile',
+                    'path' => route('settings.profile.edit', absolute: false),
+                    'pro'  => false,
+                ],
+                [
+                    'name' => 'Change Photo',
+                    'path' => route('settings.profile.photo', absolute: false),
+                    'pro'  => false,
+                ],
+                [
+                    'name' => 'Change Password',
+                    'path' => route('settings.password.edit', absolute: false),
+                    'pro'  => false,
+                ],
                 ],
             ],
         ];
@@ -58,21 +68,32 @@ class MenuHelper
      */
     public static function getMyAccountItems(): array
     {
+        $user = Auth::id();
         return [
             [
                 'icon' => 'user-profile',
                 'name' => 'My Account',
                 'subItems' => [
                     [
-                        'name' => 'My Profile',
-                        'path' => route('settings.profile.edit', absolute: false),
-                        'pro'  => false,
-                    ],
-                    [
-                        'name' => 'Change Password',
-                        'path' => route('settings.password.edit', absolute: false),
-                        'pro'  => false,
-                    ],
+                    'name' => 'Profile',
+                    'path' => route('settings.profile.show', absolute: false),
+                    'pro'  => false,
+                ],
+                [
+                    'name' => 'Edit Profile',
+                    'path' => route('settings.profile.edit', absolute: false),
+                    'pro'  => false,
+                ],
+                [
+                    'name' => 'Change Photo',
+                    'path' => route('settings.profile.photo', absolute: false),
+                    'pro'  => false,
+                ],
+                [
+                    'name' => 'Change Password',
+                    'path' => route('settings.password.edit', absolute: false),
+                    'pro'  => false,
+                ],
                 ],
             ],
         ];
