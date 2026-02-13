@@ -34,13 +34,14 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('settings/show', [Settings\ProfileController::class, 'show'])->name('settings.profile.show');
-    Route::get('settings/photo', [Settings\ProfileController::class, 'photo'])->name('settings.profile.photo');
     Route::get('settings/profile', [Settings\ProfileController::class, 'edit'])->name('settings.profile.edit');
     Route::put('settings/profile', [Settings\ProfileController::class, 'update'])->name('settings.profile.update');
-    Route::delete('settings/profile', [Settings\ProfileController::class, 'destroy'])->name('settings.profile.destroy');
+    Route::get('settings/photo', [Settings\ProfileController::class, 'photo'])->name('settings.profile.photo');
+    Route::patch('settings/photo', [Settings\ProfileController::class, 'updatePhoto'])->name('settings.profile.photo.update');
     Route::get('settings/password', [Settings\PasswordController::class, 'edit'])->name('settings.password.edit');
     Route::put('settings/password', [Settings\PasswordController::class, 'update'])->name('settings.password.update');
-    Route::patch('settings/photo', [Settings\ProfileController::class, 'updatePhoto'])->name('settings.profile.photo.update');
+    Route::delete('settings/profile', [Settings\ProfileController::class, 'destroy'])->name('settings.profile.destroy');
+    
 });
 
 Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
