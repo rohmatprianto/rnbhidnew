@@ -1,13 +1,21 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventphotoController;
+use App\Http\Controllers\EventPhotoOrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landingpage');
 })->name('home');
+
+Route::get('/eventphoto', [EventPhotoOrderController::class, 'index'])->name('eventphoto.index');
+Route::get('/eventphoto/{eventPhoto}/order', [EventPhotoOrderController::class, 'create'])
+    ->name('eventphoto.order.create');
+Route::post('/eventphoto/{eventPhoto}/order', [EventPhotoOrderController::class, 'store'])
+    ->name('eventphoto.order.store');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
@@ -28,7 +36,35 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
         Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
         Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])->name('users.status.update');
+
+        
     });
+
+    Route::middleware(['auth', 'can:viewAny,' . User::class])->group(function () {
+    // Admin list
+    Route::get('/event', [EventphotoController::class, 'indexlist'])
+            ->name('event.eventphoto.index');
+    Route::get('/event/eventphoto/{event}', [EventphotoController::class, 'show'])
+    ->name('event.eventphoto.show');
+
+    // CRUD Admin
+    Route::get('/event/create', [EventphotoController::class, 'create'])
+        ->name('event.eventphoto.create');
+    Route::post('/event/eventphoto', [EventphotoController::class, 'store'])
+        ->name('event.eventphoto.store');
+
+    Route::get('/event/eventphoto/{event}/edit', [EventphotoController::class, 'edit'])
+        ->name('event.eventphoto.edit');
+    Route::put('/event/eventphoto/{event}', [EventphotoController::class, 'update'])
+        ->name('event.eventphoto.update');
+
+    Route::delete('/event/eventphoto/{event}', [EventphotoController::class, 'destroy'])
+        ->name('event.eventphoto.destroy');
+
+    // Optional: toggle status cepat
+    Route::patch('/event/eventphoto/{event}/status', [EventphotoController::class, 'updateStatus'])
+        ->name('event.eventphoto.status');
+});
 });
 
 require __DIR__ . '/auth.php';
