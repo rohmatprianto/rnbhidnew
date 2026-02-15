@@ -14,6 +14,7 @@ class EventPhoto extends Model
         'status',
         'cover_path',
         'price_notes',
+        'category_notes',
     ];
 
     protected $casts = [

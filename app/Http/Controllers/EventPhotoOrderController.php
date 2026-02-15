@@ -22,9 +22,28 @@ class EventPhotoOrderController extends Controller
 
 public function create(EventPhoto $eventPhoto)
 {
+    // optional: hanya boleh booking kalau event open
+    if (strtolower($eventPhoto->status ?? 'open') !== 'open') {
+        return redirect()
+            ->route('eventphoto.index')
+            ->with('error', 'Event ini sedang tidak menerima booking.');
+    }
 
-    return view('eventphoto.formpesan', compact('eventPhoto'));
+    // optional: jika kategori belum di-set admin, jangan tampilkan form
+    $hasCategories = collect(preg_split('/\s*;\s*/', trim($eventPhoto->category_notes ?? '')))
+        ->map(fn($v) => trim($v))
+        ->filter()
+        ->isNotEmpty();
+
+    if (! $hasCategories) {
+        return redirect()
+            ->route('eventphoto.index')
+            ->with('error', 'Kategori/Class belum diatur admin untuk event ini.');
+    }
+
+    return view('eventphoto.formpesan', ['eventPhoto' => $eventPhoto]);
 }
+
 
     public function store(Request $request, EventPhoto $eventPhoto): RedirectResponse
     {
@@ -32,6 +51,12 @@ public function create(EventPhoto $eventPhoto)
         if (($eventPhoto->status ?? '') !== 'open') {
             return back()->with('error', 'Event tidak tersedia untuk pemesanan.')->withInput();
         }
+
+        $allowedCategories = collect(preg_split('/\s*;\s*/', trim($eventPhoto->category_notes ?? '')))
+        ->map(fn ($v) => trim($v))
+        ->filter()
+        ->values()
+        ->all();
 
         $data = $request->validate([
             'guardian_name'     => ['required','string','max:120'],
@@ -46,9 +71,6 @@ public function create(EventPhoto $eventPhoto)
         ]);
 
         $data['event_photo_id'] = $eventPhoto->id;
-
-        // opsional kalau order harus login:
-        // $data['user_id'] = auth()->id();
 
         EventPhotoOrder::create($data);
 

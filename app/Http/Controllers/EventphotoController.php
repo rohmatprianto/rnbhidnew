@@ -84,6 +84,7 @@ class EventphotoController extends Controller
             'status'      => ['required','in:open,closed,draft'],
             'price_notes' => ['nullable','string'], // simpan "a; b; c"
             'cover'       => ['nullable','image','max:2048'], // 2MB
+            'category_notes' => ['nullable','string'],
         ]);
 
         if ($request->hasFile('cover')) {
@@ -121,6 +122,7 @@ class EventphotoController extends Controller
             'status'      => ['required','in:open,closed,draft'],
             'price_notes' => ['nullable','string'],
             'cover'       => ['nullable','image','max:2048'],
+            'category_notes' => ['nullable','string'],
         ]);
 
         if ($request->hasFile('cover')) {

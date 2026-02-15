@@ -98,6 +98,9 @@
                         <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Price Notes
                         </label>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            Gunakan tanda <span class="font-semibold">;</span> untuk memisahkan opsi.
+                        </p>
                         <textarea name="price_notes" rows="4"
                             placeholder="Pisahkan item dengan titik koma. Contoh: 2 Moto / Kualifikasi Rp.50.000; Lebih dari 2 Moto Rp.70.000"
                             class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700
@@ -106,6 +109,28 @@
                         @error('price_notes')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                         @enderror
+
+                    </div>
+
+                    {{-- Category Notes --}}
+                    <div class="md:col-span-2">
+                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Category / Class List
+                        </label>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            Gunakan tanda <span class="font-semibold">;</span> untuk memisahkan opsi.
+                        </p>
+                        <textarea name="category_notes" rows="3"
+                            placeholder="Pisahkan item dengan titik koma. Contoh: Boys 2019; Girls 2019; FFA; Open Mini"
+                            class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700
+               focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10 focus:outline-none
+               dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-200">{{ old('category_notes', 'Boys; Girls; FFA; Open Mini') }}</textarea>
+
+                        @error('category_notes')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+
+
                     </div>
                 </div>
             </div>

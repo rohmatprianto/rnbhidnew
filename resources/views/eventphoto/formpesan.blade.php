@@ -188,29 +188,46 @@
                     @enderror
                 </div>
 
-                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <div>
-                        <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Nama Panggilan Rider <span class="text-red-500">*</span>
-                        </label>
-                        <input name="rider_nickname" value="{{ old('rider_nickname') }}" required
-                            class="h-10 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-200">
-                        @error('rider_nickname')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Kategori / Class <span class="text-red-500">*</span>
-                        </label>
-                        <input name="category" value="{{ old('category') }}" required
-                            class="h-10 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-200">
-                        @error('category')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
+                <div>
+                    <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">
+                        Nama Panggilan Rider <span class="text-red-500">*</span>
+                    </label>
+                    <input name="rider_nickname" value="{{ old('rider_nickname') }}" required
+                        class="h-10 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-200">
+                    @error('rider_nickname')
+                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                    @enderror
                 </div>
+
+                @php
+                    // Ambil opsi kategori dari DB event (dipisah dengan ;)
+                    $catItems = preg_split('/\s*;\s*/', trim($eventPhoto->category_notes ?? ''));
+                    $catItems = array_values(array_filter(array_map('trim', $catItems)));
+                @endphp
+
+                <div>
+                    <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">
+                        Kategori / Class <span class="text-red-500">*</span>
+                    </label>
+
+                    <select name="category" required
+                        class="h-10 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm text-gray-700
+               focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10 focus:outline-none
+               dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-200">
+                        <option value="">Pilih Kategori</option>
+
+                        @foreach ($catItems as $opt)
+                            <option value="{{ $opt }}" @selected(old('category') === $opt)>
+                                {{ $opt }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('category')
+                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+
 
                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <div>

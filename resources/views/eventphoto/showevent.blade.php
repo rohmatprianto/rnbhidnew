@@ -65,7 +65,24 @@
                         <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">—</p>
                     @endif
                 </div>
+                <div class="mt-4">
+                    <p class="mt-3 font-bold text-xs text-gray-600 dark:text-gray-400">Class Category</p>
+                    @php
+                        $items = preg_split('/\s*;\s*/', trim($event->category_notes ?? ''));
+                        $items = array_values(array_filter(array_map('trim', $items)));
+                    @endphp
 
+                    @if (count($items))
+                        <ul
+                            class="mt-3 list-disc list-inside grid grid-cols-3 gap-x-3 gap-y-1 text-xs text-gray-600 dark:text-gray-400">
+                            @foreach ($items as $item)
+                                <li class="break-words">{{ $item }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">—</p>
+                    @endif
+                </div>
                 <div class="mt-6 flex items-center justify-end gap-2">
                     <a href="{{ route('event.eventphoto.index') }}"
                         class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50

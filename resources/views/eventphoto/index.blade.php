@@ -14,7 +14,7 @@
 
 @section('content_mobile')
     {{-- Title + search (FE only) --}}
-    <div class="flex items-end justify-between gap-3">
+    <div class="flex items-end justify-between gap-3 mb-4">
         <div>
             <h1 class="text-base font-semibold text-gray-900 dark:text-white">Event List</h1>
             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Pesan foto kamu sekarang</p>
@@ -28,13 +28,18 @@
         </div>
     </div>
 
-    @if (session('success'))
-        <div
-            class="mt-3 rounded-xl border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-700
-                   dark:border-green-900/50 dark:bg-green-900/20 dark:text-green-200">
-            {{ session('success') }}
+    @session('success')
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition.opacity.duration.300ms>
+            <x-ui.alert variant="success">{{ $value }}</x-ui.alert>
         </div>
-    @endif
+    @endsession
+
+    @session('error')
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition.opacity.duration.300ms>
+            <x-ui.alert variant="warning">{{ $value }}</x-ui.alert>
+        </div>
+    @endsession
+
 
     {{-- Cards --}}
     <div class="mt-4 space-y-3">
